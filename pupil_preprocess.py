@@ -5,6 +5,39 @@ import warnings
 import pandas as pd
 import numpy as np
 
+def extract_events(data, event_name):
+    if event_name == 'samps':
+        col = ['time','trackertime', 'x','y','size']
+        df = data[col].explode(col)
+    else:
+        if event_name == 'Efix':
+            col = ['starttime', 'endtime', 'duration', 'endx', 'endy']
+        elif event_name == 'Esac':
+            col = ['starttime', 'endtime', 'duration', 'startx', 'starty', 'endx', 'endy']
+        elif event_name == 'Eblk':
+            col = ['starttime', 'endtime', 'duration']
+        elif event_name == 'msg':
+            col = ['trackertime', 'message']
+        df = data.events.apply(lambda x: x[event_name]).explode().dropna()
+        df = pd.DataFrame(df.tolist(), columns=col)
+
+    if event_name != 'msg': # convert to numeric
+        df = pd.DataFrame(df.values.astype('float'), columns=col)
+
+    return df
+
+
+def borrow_events(data, event_data, events_to_borrow):
+    for i in event_data.index:
+        row = event_data.loc[i]
+        s = row.starttime
+        e = row.endtime
+        inrange = data.trackertime.between(s,e)
+        for e in events_to_borrow:
+            data.loc[inrange, e] = row[e]
+    return data
+
+    
 def correlation_eye(data, left, right):
     """calculate the correlation between two columns
     
@@ -207,8 +240,8 @@ def deblink_pupil(df, column, samp_freq):
     # set samps during blinks as NaN
     df[column + '_deblink'] = df[column]
     for i in zip(blinks['blink_onset'],blinks['blink_offset']):
-        df[column + '_deblink'].iloc[i[0]:i[1]+1] = np.nan # +1 used to include the last zero
-     
+        #df[column + '_deblink'].iloc[i[0]:i[1]+1] = np.nan # +1 used to include the last zero
+        df.iloc[slice(i[0], i[1]+1), df.columns.get_loc(column + '_deblink')] = np.nan # +1 used to include the last zero
     # set other missing values to be NaN
     # zeroes are retained after deblink if the entire trial is missing
     df[column + '_deblink'] = df[column + '_deblink'].replace({0:np.nan})

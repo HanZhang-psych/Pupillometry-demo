@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.2.3),
-    on July 26, 2022, at 14:25
+    on July 28, 2022, at 10:19
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -53,7 +53,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\hanzh\\Desktop\\Pupillometry Demo\\scene-contrast_lastrun.py',
+    originPath='C:\\Users\\hanzh\\Desktop\\Github\\Pupillometry-demo\\scene-contrast_lastrun.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
@@ -266,6 +266,15 @@ recalibrationClock = core.Clock()
 start_recordingClock = core.Clock()
 StartRecISI = clock.StaticPeriod(win=win, screenHz=expInfo['frameRate'], name='StartRecISI')
 
+# Initialize components for Routine "ITI"
+ITIClock = core.Clock()
+fixation_cross_2 = visual.ShapeStim(
+    win=win, name='fixation_cross_2', vertices='cross',
+    size=size_fixation,
+    ori=0.0, pos=(0, 0),
+    lineWidth=2.0,     colorSpace='rgb',  lineColor='white', fillColor='white',
+    opacity=None, depth=0.0, interpolate=True)
+
 # Initialize components for Routine "fixation_check"
 fixation_checkClock = core.Clock()
 fixation_cross = visual.ShapeStim(
@@ -309,15 +318,6 @@ warn_text = visual.TextStim(win=win, name='warn_text',
     color='white', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
-
-# Initialize components for Routine "ITI"
-ITIClock = core.Clock()
-fixation_cross_2 = visual.ShapeStim(
-    win=win, name='fixation_cross_2', vertices='cross',
-    size=size_fixation,
-    ori=0.0, pos=(0, 0),
-    lineWidth=2.0,     colorSpace='rgb',  lineColor='white', fillColor='white',
-    opacity=None, depth=0.0, interpolate=True)
 
 # Initialize components for Routine "stop_recording"
 stop_recordingClock = core.Clock()
@@ -565,6 +565,75 @@ for thisFree_loop in free_loop:
     if thisFree_loop != None:
         for paramName in thisFree_loop:
             exec('{} = thisFree_loop[paramName]'.format(paramName))
+    
+    # ------Prepare to start Routine "ITI"-------
+    continueRoutine = True
+    routineTimer.add(2.000000)
+    # update component parameters for each repeat
+    # keep track of which components have finished
+    ITIComponents = [fixation_cross_2]
+    for thisComponent in ITIComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    ITIClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "ITI"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = ITIClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=ITIClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *fixation_cross_2* updates
+        if fixation_cross_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            fixation_cross_2.frameNStart = frameN  # exact frame index
+            fixation_cross_2.tStart = t  # local t and not account for scr refresh
+            fixation_cross_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(fixation_cross_2, 'tStartRefresh')  # time at next scr refresh
+            fixation_cross_2.setAutoDraw(True)
+        if fixation_cross_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > fixation_cross_2.tStartRefresh + 2-frameTolerance:
+                # keep track of stop time/frame for later
+                fixation_cross_2.tStop = t  # not accounting for scr refresh
+                fixation_cross_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(fixation_cross_2, 'tStopRefresh')  # time at next scr refresh
+                fixation_cross_2.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in ITIComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # -------Ending Routine "ITI"-------
+    for thisComponent in ITIComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    free_loop.addData('fixation_cross_2.started', fixation_cross_2.tStartRefresh)
+    free_loop.addData('fixation_cross_2.stopped', fixation_cross_2.tStopRefresh)
     
     # ------Prepare to start Routine "fixation_check"-------
     continueRoutine = True
@@ -1053,75 +1122,6 @@ for thisFree_loop in free_loop:
     for thisComponent in warn_start_locComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    
-    # ------Prepare to start Routine "ITI"-------
-    continueRoutine = True
-    routineTimer.add(2.000000)
-    # update component parameters for each repeat
-    # keep track of which components have finished
-    ITIComponents = [fixation_cross_2]
-    for thisComponent in ITIComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    ITIClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-    
-    # -------Run Routine "ITI"-------
-    while continueRoutine and routineTimer.getTime() > 0:
-        # get current time
-        t = ITIClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=ITIClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        # *fixation_cross_2* updates
-        if fixation_cross_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            fixation_cross_2.frameNStart = frameN  # exact frame index
-            fixation_cross_2.tStart = t  # local t and not account for scr refresh
-            fixation_cross_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(fixation_cross_2, 'tStartRefresh')  # time at next scr refresh
-            fixation_cross_2.setAutoDraw(True)
-        if fixation_cross_2.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > fixation_cross_2.tStartRefresh + 2-frameTolerance:
-                # keep track of stop time/frame for later
-                fixation_cross_2.tStop = t  # not accounting for scr refresh
-                fixation_cross_2.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(fixation_cross_2, 'tStopRefresh')  # time at next scr refresh
-                fixation_cross_2.setAutoDraw(False)
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in ITIComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-    
-    # -------Ending Routine "ITI"-------
-    for thisComponent in ITIComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    free_loop.addData('fixation_cross_2.started', fixation_cross_2.tStartRefresh)
-    free_loop.addData('fixation_cross_2.stopped', fixation_cross_2.tStopRefresh)
     thisExp.nextEntry()
     
 # completed nReps_free repeats of 'free_loop'

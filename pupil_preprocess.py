@@ -27,12 +27,12 @@ def extract_events(data, event_name):
     return df
 
 
-def borrow_events(data, event_data, events_to_borrow):
+def borrow_events(data, time_col, event_data, events_to_borrow):
     for i in event_data.index:
         row = event_data.loc[i]
-        s = row.starttime
-        e = row.endtime
-        inrange = data.trackertime.between(s,e)
+        s = int(row.starttime)
+        e = int(row.endtime)
+        inrange = data[time_col].between(s,e)
         for e in events_to_borrow:
             data.loc[inrange, e] = row[e]
     return data
